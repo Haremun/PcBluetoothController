@@ -14,9 +14,14 @@ public class BluetoothConnectionThread extends Thread {
     private BluetoothDevice device;
     private BluetoothSocket mSocket;
 
+    private ConnectionCallback connectionCallback;
+
     private ManageConnectionThread manageConnectionThread = null;
 
-    public BluetoothConnectionThread() {
+    public BluetoothConnectionThread(ConnectionCallback callback) {
+
+        this.connectionCallback = callback;
+
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
@@ -63,12 +68,8 @@ public class BluetoothConnectionThread extends Thread {
                 }
                 return;
             }
-            manageConnectionThread = new ManageConnectionThread(mSocket);
+            connectionCallback.onConnected(new ManageConnectionThread(mSocket));
             Log.i("BluetoothTest", "Connected");
         }
-    }
-
-    public ManageConnectionThread getManageConnectionThread(){
-        return manageConnectionThread;
     }
 }

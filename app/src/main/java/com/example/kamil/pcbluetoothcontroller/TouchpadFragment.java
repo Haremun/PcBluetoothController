@@ -3,6 +3,7 @@ package com.example.kamil.pcbluetoothcontroller;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +15,14 @@ import android.view.ViewGroup;
 public class TouchpadFragment extends Fragment {
 
     private TouchPadSurfaceView touchPadSurfaceView;
-    private ManageConnectionThread manageConnectionThread = null;
 
     public TouchpadFragment() {
         // Required empty public constructor
     }
 
     public void setManageConnectionThread(ManageConnectionThread manageConnectionThread) {
-        this.manageConnectionThread = manageConnectionThread;
+        if (touchPadSurfaceView != null)
+            touchPadSurfaceView.setManageConnectionThread(manageConnectionThread);
     }
 
     @Override

@@ -20,9 +20,10 @@ public class TouchPadSurfaceView extends SurfaceView implements SurfaceHolder.Ca
     private float deltaY;
     private float oldX = 0.0f;
     private float oldY = 0.0f;
-    
 
-    private String tcpMessage = "empty";
+    private ManageConnectionThread manageConnectionThread;
+
+    private String message = "empty";
     private long singleClickTime = 0;
 
     //long licznik = 0;
@@ -46,6 +47,9 @@ public class TouchPadSurfaceView extends SurfaceView implements SurfaceHolder.Ca
 
     }
 
+    public void setManageConnectionThread(ManageConnectionThread manageConnectionThread) {
+        this.manageConnectionThread = manageConnectionThread;
+    }
 
     public void MyGameSurfaceView_OnResume() {
 
@@ -92,27 +96,27 @@ public class TouchPadSurfaceView extends SurfaceView implements SurfaceHolder.Ca
                 deltaY = 0.0f;
                 long currentTime = System.currentTimeMillis();
                 if (currentTime - singleClickTime < 200)
-                    tcpMessage = "CLICK";
+                    message = "CLICK";
                 /*if (System.currentTimeMillis() - doubleClickTime < delayInMillis) {
-                    tcpMessage = "DOUBLE_CLICK";
+                    message = "DOUBLE_CLICK";
                     doubleClickTime = -delayInMillis;
 
                 } else {
                     doubleClickTime = System.currentTimeMillis();
                 }*/
 
-                //tcpMessage = "UP";
+                //message = "UP";
 
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
 
-                if (tcpMessage.equals("")) {
+                if (message.equals("")) {
                     deltaX = (oldX - event.getX()) * -1;
                     deltaY = (oldY - event.getY()) * -1;
                     oldX = event.getX();
                     oldY = event.getY();
-                    tcpMessage = this.deltaX + "$" + this.deltaY;
+                    message = this.deltaX + "$" + this.deltaY;
                 }
                 break;
             }
@@ -141,14 +145,19 @@ public class TouchPadSurfaceView extends SurfaceView implements SurfaceHolder.Ca
                 if (canvas != null) {
                     Draw(canvas);
 
-                    if (!tcpMessage.equals("-0.0$-0.0") && !tcpMessage.equals("")) {
+                    if (!message.equals("-0.0$-0.0") && !message.equals("")) {
                         //licznik++;
-                        //tcpConnection.sendMessage(tcpMessage);
+                        if (manageConnectionThread != null) {
+                            if (manageConnectionThread.isConnected())
+                                manageConnectionThread.write(message);
+                            Log.i("TouchPad", "m");
+                        }
 
-                        Log.i("TouchPad", tcpMessage);
-                        tcpMessage = "";
-                    } else{
-                        tcpMessage = "";
+
+                        Log.i("TouchPad", message);
+                        message = "";
+                    } else {
+                        message = "";
                     }
                 }
             }
