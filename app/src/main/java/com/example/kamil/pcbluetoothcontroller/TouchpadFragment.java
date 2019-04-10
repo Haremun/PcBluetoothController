@@ -14,11 +14,15 @@ import android.view.ViewGroup;
 public class TouchpadFragment extends Fragment {
 
     private TouchPadSurfaceView touchPadSurfaceView;
+    private ManageConnectionThread manageConnectionThread = null;
 
     public TouchpadFragment() {
         // Required empty public constructor
     }
 
+    public void setManageConnectionThread(ManageConnectionThread manageConnectionThread) {
+        this.manageConnectionThread = manageConnectionThread;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

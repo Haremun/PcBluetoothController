@@ -20,6 +20,7 @@ public class TouchPadSurfaceView extends SurfaceView implements SurfaceHolder.Ca
     private float deltaY;
     private float oldX = 0.0f;
     private float oldY = 0.0f;
+    
 
     private String tcpMessage = "empty";
     private long singleClickTime = 0;
