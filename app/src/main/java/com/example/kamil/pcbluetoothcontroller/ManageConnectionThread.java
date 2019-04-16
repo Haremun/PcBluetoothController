@@ -3,6 +3,7 @@ package com.example.kamil.pcbluetoothcontroller;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -23,10 +24,10 @@ public class ManageConnectionThread extends Thread {
         mSocket = socket;
 
 
-        InputStream inTmp = null;
+        BufferedInputStream inTmp = null;
         OutputStream outTmp = null;
         try {
-            inTmp = mSocket.getInputStream();
+            inTmp = new BufferedInputStream(mSocket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,6 +68,7 @@ public class ManageConnectionThread extends Thread {
 
             Log.i("Test", "waiting...");
             String string = reader.readLine();
+
             int size = 10000000;
             if (!string.equals(""))
                 size = Integer.parseInt(string);
@@ -81,13 +83,17 @@ public class ManageConnectionThread extends Thread {
             int limit = 1000000;
             int bufferSize;
             while (i < size) {
+
+                Log.i("Test", "loop1");
                 bufferSize = mInputStream.read(buffer);
+                Log.i("Test", "loop2");
 
                 for (int k = 0; k < bufferSize; k++) {
                     if ((k + i) < size)
                         array[k + i] = buffer[k];
                 }
                 i += bufferSize;
+
             }
             Log.i("Test", "Screen loaded");
             write("OK2");

@@ -50,11 +50,12 @@ public class ScreenCaptureFragment extends Fragment implements UpdateFragment {
     @Override
     public void onUpdate(Bitmap bmp) {
 
+        //final int w = bmp.getWidth();
         final Bitmap bitmap = Bitmap.createScaledBitmap(bmp, 1920, 1080, true);
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                textView.setText(i + "");
+                //textView.setText(w + "");
 
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 imageView.setImageBitmap(bitmap);
