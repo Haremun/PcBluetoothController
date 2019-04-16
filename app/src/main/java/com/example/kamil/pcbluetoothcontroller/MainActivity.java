@@ -7,6 +7,8 @@ import android.os.Bundle;
 public class MainActivity extends AppCompatActivity implements ConnectionCallback {
 
     private TouchpadFragment touchPadFragment;
+    private ScreenCaptureFragment screenCaptureFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -14,14 +16,20 @@ public class MainActivity extends AppCompatActivity implements ConnectionCallbac
         BluetoothConnectionThread connectionThread = new BluetoothConnectionThread(this);
         connectionThread.start();
 
-        touchPadFragment = new TouchpadFragment();
+        /*touchPadFragment = new TouchpadFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, touchPadFragment);
+        transaction.commit();*/
+
+        screenCaptureFragment = new ScreenCaptureFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, screenCaptureFragment);
         transaction.commit();
     }
 
     @Override
     public void onConnected(ManageConnectionThread manageConnectionThread) {
-        touchPadFragment.setManageConnectionThread(manageConnectionThread);
+        //touchPadFragment.setManageConnectionThread(manageConnectionThread);
+        screenCaptureFragment.setManageConnectionThread(manageConnectionThread);
     }
 }
